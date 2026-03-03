@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { NavBar } from "@/components/ui/tubelight-navbar";
+import { Home, Users, FileText, Book } from "lucide-react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,6 +26,13 @@ export const metadata: Metadata = {
   },
 };
 
+const navItems = [
+  { name: 'Home', url: '/', icon: Home },
+  { name: 'Agents', url: '/agents', icon: Users },
+  { name: 'Pricing', url: '/#pricing', icon: FileText },
+  { name: 'Docs', url: '/docs', icon: Book },
+];
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -34,6 +43,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <NavBar items={navItems} />
         {children}
       </body>
     </html>

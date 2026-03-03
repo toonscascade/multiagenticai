@@ -2,9 +2,82 @@ import { HeroLanding } from '@/components/ui/hero-1'
 import { AgentsSection } from '@/components/landing/agents-section'
 import { PricingSection } from '@/components/landing/pricing-section'
 import { Footer } from '@/components/landing/footer'
+import { Timeline } from '@/components/ui/timeline'
 import { agents } from '@/lib/agents-data'
 
-export default function Home() {
+export default function HomePage() {
+
+  const timelineData = [
+    {
+      title: "v2.0 - 2026",
+      content: (
+        <div>
+          <p className="text-muted-foreground text-xs md:text-sm font-normal mb-4">
+            Major release with multi-agent support and enhanced AI capabilities
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-3 rounded-lg bg-muted/50 border border-border">
+              <h4 className="font-semibold text-foreground text-sm mb-1">Multi-Agent Collaboration</h4>
+              <p className="text-xs text-muted-foreground">Multiple AI agents working together seamlessly</p>
+            </div>
+            <div className="p-3 rounded-lg bg-muted/50 border border-border">
+              <h4 className="font-semibold text-foreground text-sm mb-1">Enhanced Voice Recognition</h4>
+              <p className="text-xs text-muted-foreground">Natural language processing improvements</p>
+            </div>
+            <div className="p-3 rounded-lg bg-muted/50 border border-border">
+              <h4 className="font-semibold text-foreground text-sm mb-1">YouTube Analysis</h4>
+              <p className="text-xs text-muted-foreground">AI-powered video content analysis</p>
+            </div>
+            <div className="p-3 rounded-lg bg-muted/50 border border-border">
+              <h4 className="font-semibold text-foreground text-sm mb-1">Advanced Research</h4>
+              <p className="text-xs text-muted-foreground">Deep research capabilities with citations</p>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "v1.5 - Late 2025",
+      content: (
+        <div>
+          <p className="text-muted-foreground text-xs md:text-sm font-normal mb-4">
+            Added voice agent and marketing agent to the platform
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-3 rounded-lg bg-gradient-to-br from-violet-500/10 to-purple-500/10 border border-violet-500/20">
+              <h4 className="font-semibold text-foreground text-sm mb-1">Voice Agent</h4>
+              <p className="text-xs text-muted-foreground">Natural voice interactions for hands-free use</p>
+            </div>
+            <div className="p-3 rounded-lg bg-gradient-to-br from-violet-500/10 to-purple-500/10 border border-violet-500/20">
+              <h4 className="font-semibold text-foreground text-sm mb-1">Marketing Agent</h4>
+              <p className="text-xs text-muted-foreground">AI-powered marketing content generation</p>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "v1.0 - Early 2025",
+      content: (
+        <div>
+          <p className="text-muted-foreground text-xs md:text-sm font-normal mb-4">
+            Initial launch with Software Engineer and Research agents
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="p-3 rounded-lg bg-muted/50 border border-border">
+              <h4 className="font-semibold text-foreground text-sm mb-1">Software Engineer Agent</h4>
+              <p className="text-xs text-muted-foreground">Code assistance and development help</p>
+            </div>
+            <div className="p-3 rounded-lg bg-muted/50 border border-border">
+              <h4 className="font-semibold text-foreground text-sm mb-1">Research Agent</h4>
+              <p className="text-xs text-muted-foreground">Information gathering and analysis</p>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+  ]
+
   return (
     <main className="min-h-screen relative">
       {/* Continuous Blended Background Gradient - Single Flow */}
@@ -40,7 +113,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Hero Section with integrated navbar */}
+      {/* Hero Section */}
       <HeroLanding
         logo={{
           src: "https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=violet&shade=500",
@@ -83,6 +156,22 @@ export default function Home() {
       
       {/* Sections flow naturally - no negative margins, clean blend */}
       <AgentsSection agents={agents} />
+      
+      {/* Timeline Section - Product Journey */}
+      <section id="timeline" className="relative py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
+              Our Journey
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              From humble beginnings to a comprehensive AI platform
+            </p>
+          </div>
+          <Timeline data={timelineData} />
+        </div>
+      </section>
+      
       <PricingSection />
       <Footer />
     </main>

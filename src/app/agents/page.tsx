@@ -1,11 +1,10 @@
-import { Navbar } from '@/components/ui/navbar'
 import { AgentCard } from '@/components/agents/agent-card'
 import { agents } from '@/lib/agents-data'
 import { Bot, Sparkles } from 'lucide-react'
 
 export default function AgentsPage() {
   return (
-    <main className="min-h-screen relative overflow-hidden">
+    <main className="min-h-screen relative overflow-hidden pt-20">
       {/* Background Gradient Elements */}
       <div
         aria-hidden="true"
@@ -35,9 +34,7 @@ export default function AgentsPage() {
         />
       </div>
 
-      <Navbar />
-      
-      <div className="pt-32 pb-20 px-6">
+      <div className="pt-12 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-20">
