@@ -1,0 +1,12 @@
+make the navbar same for every webpage make it linked to each   │
+│   other and also delete the old navbar we dont need it and in      │
+│   right corner use the same navbar means only with two element     │
+│   which is login and signup there and add one more section which   │
+│   is based on a file named clients.md in this directory and also   │
+│   in scroll you have to list the ai agents remove the Meet Our     │
+│   AI Agents and add it to the scroll so it display the ai agents   │
+│   in scroll with details do it as a agent write and edit codes     │
+│   also the navbar will be the tubelight navbar which i have        │
+│   added and you also have to update the old pricing to my new      │
+│   one which i have pasted in a file named landingpricing.md do     │
+│   it as a agent  
