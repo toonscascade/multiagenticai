@@ -1,0 +1,35 @@
+2026-03-03T17:08:21.020Z [console][error] Please ensure that the container has a non-static position, like 'relative', 'fixed', or 'absolute' to ensure scroll offset is calculated correctly.
+2026-03-03T17:16:11.672Z [console][warn] [Fast Refresh] done in 132ms
+2026-03-03T17:16:38.687Z [console][warn] [Fast Refresh] rebuilding
+2026-03-03T17:16:39.146Z [console][warn] [Fast Refresh] done in 510ms
+2026-03-03T17:16:39.496Z [console][log] __ORCHIDS_NAVIGATE__ http://localhost:3000/
+2026-03-03T17:17:05.735Z [console][warn] [Fast Refresh] rebuilding
+2026-03-03T17:17:06.093Z [console][warn] [Fast Refresh] done in 454ms
+2026-03-03T17:17:06.254Z [console][log] __ORCHIDS_NAVIGATE__ http://localhost:3000/
+2026-03-03T17:16:11.592Z [console][log] [Fast Refresh] rebuilding
+2026-03-03T17:16:11.673Z [console][log] [Fast Refresh] done in 132ms
+2026-03-03T17:16:38.688Z [console][log] [Fast Refresh] rebuilding
+2026-03-03T17:16:39.147Z [console][log] [Fast Refresh] done in 510ms
+2026-03-03T17:16:39.497Z [console][debug] __ORCHIDS_NAVIGATE__ http://localhost:3000/
+2026-03-03T17:17:05.735Z [console][log] [Fast Refresh] rebuilding
+2026-03-03T17:17:06.093Z [console][log] [Fast Refresh] done in 454ms
+2026-03-03T17:17:06.255Z [console][debug] __ORCHIDS_NAVIGATE__ http://localhost:3000/
+2026-03-03T17:16:39.349Z [network][GET 200] 
+  response: 2:I["[project]/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)",["/_next/static/chunks/node_modules_next_dist_be32b49c._.js","/_next/static/chunks/src_app_favicon_ico_mjs_81d86e48._.js"],"SegmentViewNode"]
+4:"$Sreact.fragment"
+16:I["[project]/src/components/ui/tubelight-navbar.tsx [app-client] (ecmascript)",["/_next/static/chunks/node_modules_4bb2af41._.js","/_next/static/chunks/src_c3692a0c._.js","/_next/static/chunks/src_app_layout_tsx_1cf6b850._.js"],"NavBar"]
+18:I["[project]/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)",["/_next/static/chunks/node_modules_next_dist_be32b49c._.js","/_next/static/chunks/src_app_favicon_ico_mjs_81d86e48._.js"],"default"]
+1a:I["[project]/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)",["/_next/static/chunks/node_modules_next_dist_be32b49c._.js","/_next/static/chunks/src_app_favicon_ico_mjs_81d86e48._.js"],"default"]
+29:I["[project]/src/components/landing/footer.tsx [app-client] (ecmascript)",["/_next/static/chunks/node_modules_4bb2af41._.js","/_next/static/chunks/src_c3692a0c._.js","/_next/static/chunks/src_app_layout_tsx_1cf6b850._.js"],"Footer"]
+37:I["[project]/src/components/ui/hero-1.tsx [app-client] (ecmascript)",["/_next/static/chunks/node_modules_4bb2af41._.js","/_next/static/chunks/src_c3692a0c._.js","/_next/static/chunks/src_app_layout_tsx_1cf6b850._.js","/_next/static/chunks/node_modules_f5fa30f9._.js","/_next/static/chunks/src_components_bddb25c7._.js","/_next/static/chunks/src_app_page_tsx_10136dcd._.js"],"HeroLanding"]
+39:I["[project]/src/components/landing/clients-section.tsx [app-client] (ecmascript)",["/_next/static/chunks/node_modules_4bb2af41._.js","/_next/static/chunks/src_c3692a0c._.js","/_next/static/chunks/src_app_layout_tsx_1cf6b850._.js","/_next/static/chunks/node_modules_f5fa30f9._.js","/_next/static/chunks/src_components_bddb25c7._.js","/_next/static/chunks/src_app... [truncated]
+2026-03-03T17:17:06.050Z [network][GET 200] 
+  response: 2:I["[project]/node_modules/next/dist/next-devtools/userspace/app/segment-explorer-node.js [app-client] (ecmascript)",["/_next/static/chunks/node_modules_next_dist_be32b49c._.js","/_next/static/chunks/src_app_favicon_ico_mjs_81d86e48._.js"],"SegmentViewNode"]
+4:"$Sreact.fragment"
+16:I["[project]/src/components/ui/tubelight-navbar.tsx [app-client] (ecmascript)",["/_next/static/chunks/node_modules_4bb2af41._.js","/_next/static/chunks/src_c3692a0c._.js","/_next/static/chunks/src_app_layout_tsx_1cf6b850._.js"],"NavBar"]
+18:I["[project]/node_modules/next/dist/client/components/layout-router.js [app-client] (ecmascript)",["/_next/static/chunks/node_modules_next_dist_be32b49c._.js","/_next/static/chunks/src_app_favicon_ico_mjs_81d86e48._.js"],"default"]
+1a:I["[project]/node_modules/next/dist/client/components/render-from-template-context.js [app-client] (ecmascript)",["/_next/static/chunks/node_modules_next_dist_be32b49c._.js","/_next/static/chunks/src_app_favicon_ico_mjs_81d86e48._.js"],"default"]
+29:I["[project]/src/components/landing/footer.tsx [app-client] (ecmascript)",["/_next/static/chunks/node_modules_4bb2af41._.js","/_next/static/chunks/src_c3692a0c._.js","/_next/static/chunks/src_app_layout_tsx_1cf6b850._.js"],"Footer"]
+2d:I["[project]/node_modules/next/dist/client/components/client-page.js [app-client] (ecmascript)",["/_next/static/chunks/node_modules_next_dist_be32b49c._.js","/_next/static/chunks/src_app_favicon_ico_mjs_81d86e48._.js"],"ClientPageRoot"]
+2e:I["[project]/src/app/page.tsx [app-client] (ecmascript)",["/_next/static/chunks/node_modules_4bb2af41._.js","/_next/static/chunks/src_c3692a0c._.js","/_next/static/chunks/src_app_layout_tsx_1cf6b850._.js","/_next/static/chunks/src_929156a6._.js","/_next/static/chunks/node_modules_e8b6c790._.js","/_next/static/chunks/src_app_page_tsx_10136dcd._.js"],"default"]
+35:I["[project]/node_modules/next/dist/lib/framework/boundary-components.js [app-client] (ecmascript)",["/_next/static/chunks/node_modules_next_dist_be3... [truncated]

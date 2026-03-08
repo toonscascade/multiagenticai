@@ -1,199 +1,175 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { Bot, Github, Twitter, Linkedin, Heart } from 'lucide-react'
+import Link from "next/link";
+import {
+  Bot,
+  Github,
+  Twitter,
+  Linkedin,
+  Mail,
+  Phone,
+  MapPin,
+  Facebook,
+  Instagram,
+  Globe,
+} from "lucide-react";
+import { TextHoverEffect, FooterBackgroundGradient } from "@/components/ui/hover-footer";
+
+const footerLinks = [
+  {
+    title: "Product",
+    links: [
+      { label: "All Agents", href: "/agents" },
+      { label: "Software Engineer", href: "/agents/software-engineer" },
+      { label: "Marketing Agent", href: "/agents/marketing" },
+      { label: "YouTube Agent", href: "/agents/youtube" },
+      { label: "Pricing", href: "/#pricing" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About Us", href: "/about" },
+      { label: "Blog", href: "/blog" },
+      { label: "Careers", href: "/careers", pulse: true },
+      { label: "Contact", href: "/contact" },
+    ],
+  },
+];
+
+const contactInfo = [
+  {
+    icon: Mail,
+    text: "hello@multiagentai.com",
+    href: "mailto:hello@multiagentai.com",
+  },
+  {
+    icon: Phone,
+    text: "+1 (800) 123-4567",
+    href: "tel:+18001234567",
+  },
+  {
+    icon: MapPin,
+    text: "San Francisco, CA",
+  },
+];
+
+const socialLinks = [
+  { icon: Github, label: "GitHub", href: "#" },
+  { icon: Twitter, label: "Twitter", href: "#" },
+  { icon: Linkedin, label: "LinkedIn", href: "#" },
+  { icon: Facebook, label: "Facebook", href: "#" },
+  { icon: Instagram, label: "Instagram", href: "#" },
+  { icon: Globe, label: "Website", href: "#" },
+];
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-border/50 bg-gradient-to-b from-background/90 via-background/70 to-muted/40 backdrop-blur-sm">
-      {/* Top blend line */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
-      
-      <div className="max-w-7xl mx-auto px-6 py-16 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
-          {/* Brand Column */}
-          <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-2 mb-6">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/20 to-primary/10 flex items-center justify-center shadow-md backdrop-blur-sm">
-                <Bot className="h-6 w-6 text-primary" />
+    <footer className="relative bg-black/60 rounded-3xl overflow-hidden m-4 sm:m-6 lg:m-8 border border-white/10">
+      <div className="max-w-7xl mx-auto p-8 sm:p-10 lg:p-14 z-40 relative">
+
+        {/* Main grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 lg:gap-12 pb-10">
+
+          {/* Brand section */}
+          <div className="flex flex-col space-y-4">
+            <Link href="/" className="inline-flex items-center gap-2.5 group">
+              <div className="w-10 h-10 rounded-xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center shadow-lg shadow-violet-500/10 group-hover:bg-violet-500/30 transition-colors">
+                <Bot className="h-5 w-5 text-violet-400" />
               </div>
-              <span className="text-xl font-bold text-foreground">MultiAgent AI</span>
+              <span className="text-white text-xl font-bold tracking-tight">
+                MultiAgent <span className="text-violet-400">AI</span>
+              </span>
             </Link>
-            <p className="text-sm text-muted-foreground mb-6 max-w-xs">
-              Empowering businesses with intelligent AI agents for coding, marketing, content creation, and more. Transform your workflow today.
+
+            <p className="text-sm text-white/50 leading-relaxed max-w-xs">
+              Empowering businesses with intelligent AI agents for coding, marketing, content creation, and more.
             </p>
-            
-            {/* Newsletter */}
-            <div className="space-y-3">
-              <p className="text-sm font-medium text-foreground">Stay updated</p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="flex-1 px-4 py-2 rounded-lg border border-input/70 bg-background/50 backdrop-blur-sm text-sm focus:outline-none focus:ring-2 focus:ring-primary transition-shadow"
-                />
-                <Button variant="default" size="sm" className="bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary shadow-md">
-                  Subscribe
-                </Button>
-              </div>
+
+            {/* Social icons */}
+            <div className="flex flex-wrap gap-2 pt-2">
+              {socialLinks.map(({ icon: Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="w-9 h-9 rounded-lg border border-white/10 bg-white/5 flex items-center justify-center text-white/40 hover:text-violet-400 hover:border-violet-500/30 hover:bg-violet-500/10 transition-all duration-200"
+                >
+                  <Icon className="h-4 w-4" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Product Links */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-primary to-primary/60 rounded-full"></span>
-              Product
-            </h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <Link href="/agents" className="text-muted-foreground hover:text-primary transition-colors">
-                  All Agents
-                </Link>
-              </li>
-              <li>
-                <Link href="/agents/software-engineer" className="text-muted-foreground hover:text-primary transition-colors">
-                  Software Engineer
-                </Link>
-              </li>
-              <li>
-                <Link href="/agents/marketing" className="text-muted-foreground hover:text-primary transition-colors">
-                  Marketing Agent
-                </Link>
-              </li>
-              <li>
-                <Link href="/agents/youtube" className="text-muted-foreground hover:text-primary transition-colors">
-                  YouTube Agent
-                </Link>
-              </li>
-              <li>
-                <Link href="#pricing" className="text-muted-foreground hover:text-primary transition-colors">
-                  Pricing
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Company Links */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-primary to-primary/60 rounded-full"></span>
-              Company
-            </h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="/careers" className="text-muted-foreground hover:text-primary transition-colors">
-                  Careers
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-muted-foreground hover:text-primary transition-colors">
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Resources & Social */}
-          <div>
-            <h3 className="font-semibold text-foreground mb-4 flex items-center gap-2">
-              <span className="w-1 h-4 bg-gradient-to-b from-primary to-primary/60 rounded-full"></span>
-              Resources
-            </h3>
-            <ul className="space-y-3 text-sm">
-              <li>
-                <Link href="/docs" className="text-muted-foreground hover:text-primary transition-colors">
-                  Documentation
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors">
-                  Terms of Service
-                </Link>
-              </li>
-            </ul>
-            
-            {/* Social Links */}
-            <div className="flex gap-3 mt-6">
-              <a 
-                href="#" 
-                className="w-10 h-10 rounded-lg bg-gradient-to-br from-muted/50 to-muted/30 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:from-primary hover:to-primary/90 hover:text-primary-foreground transition-all shadow-sm hover:shadow-md"
-                aria-label="GitHub"
-              >
-                <Github className="h-5 w-5" />
-              </a>
-              <a 
-                href="#" 
-                className="w-10 h-10 rounded-lg bg-gradient-to-br from-muted/50 to-muted/30 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:from-primary hover:to-primary/90 hover:text-primary-foreground transition-all shadow-sm hover:shadow-md"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a 
-                href="#" 
-                className="w-10 h-10 rounded-lg bg-gradient-to-br from-muted/50 to-muted/30 backdrop-blur-sm flex items-center justify-center text-muted-foreground hover:from-primary hover:to-primary/90 hover:text-primary-foreground transition-all shadow-sm hover:shadow-md"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="h-5 w-5" />
-              </a>
+          {/* Link sections */}
+          {footerLinks.map((section) => (
+            <div key={section.title}>
+              <h4 className="text-white text-sm font-semibold uppercase tracking-widest mb-5">
+                {section.title}
+              </h4>
+              <ul className="space-y-3">
+                {section.links.map((link) => (
+                  <li key={link.label} className="relative">
+                    <Link
+                      href={link.href}
+                      className="text-sm text-white/50 hover:text-violet-400 transition-colors duration-150"
+                    >
+                      {link.label}
+                    </Link>
+                    {link.pulse && (
+                      <span className="absolute top-1 -right-4 w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
+                    )}
+                  </li>
+                ))}
+              </ul>
             </div>
+          ))}
+
+          {/* Contact section */}
+          <div>
+            <h4 className="text-white text-sm font-semibold uppercase tracking-widest mb-5">
+              Contact Us
+            </h4>
+            <ul className="space-y-4">
+              {contactInfo.map((item, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <item.icon size={17} className="text-violet-400 mt-0.5 shrink-0" />
+                  {item.href ? (
+                    <a
+                      href={item.href}
+                      className="text-sm text-white/50 hover:text-violet-400 transition-colors leading-snug break-all"
+                    >
+                      {item.text}
+                    </a>
+                  ) : (
+                    <span className="text-sm text-white/50 leading-snug">{item.text}</span>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-border/50 pt-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-sm text-muted-foreground text-center md:text-left">
-              © {new Date().getFullYear()} MultiAgent AI. All rights reserved.
-            </p>
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
-              <span>Made with</span>
-              <Heart className="w-4 h-4 text-red-500 fill-red-500 animate-pulse" />
-              <span>by the MultiAgent AI Team</span>
-            </div>
+        {/* Divider */}
+        <hr className="border-t border-white/10 my-6" />
+
+        {/* Bottom bar */}
+        <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-white/30 gap-3">
+          <p>© {new Date().getFullYear()} MultiAgent AI. All rights reserved.</p>
+          <div className="flex items-center gap-5">
+            <Link href="/privacy" className="hover:text-violet-400 transition-colors">Privacy</Link>
+            <Link href="/terms" className="hover:text-violet-400 transition-colors">Terms</Link>
+            <Link href="/cookies" className="hover:text-violet-400 transition-colors">Cookies</Link>
           </div>
         </div>
       </div>
-    </footer>
-  )
-}
 
-// Simple Button component for footer
-function Button({ variant, size, children, className = '' }: any) {
-  const baseStyles = 'inline-flex items-center justify-center rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
-  
-  const variants = {
-    default: 'bg-primary text-primary-foreground hover:bg-primary/90',
-    outline: 'border border-input bg-background hover:bg-muted text-foreground',
-  }
-  
-  const sizes = {
-    sm: 'h-9 px-3 text-sm',
-    default: 'h-10 px-4 py-2 text-sm',
-    lg: 'h-11 px-8 text-base',
-  }
-  
-  const variantStyles = variants[variant as keyof typeof variants] || variants.default
-  const sizeStyles = sizes[size as keyof typeof sizes] || sizes.default
-  
-  return (
-    <button className={`${baseStyles} ${variantStyles} ${sizeStyles} ${className}`}>
-      {children}
-    </button>
-  )
+      {/* Text hover effect — desktop only */}
+      <div className="lg:flex hidden h-[30rem] -mt-52 -mb-36 z-10 relative">
+        <TextHoverEffect text="MultiAI" />
+      </div>
+
+      <FooterBackgroundGradient />
+    </footer>
+  );
 }

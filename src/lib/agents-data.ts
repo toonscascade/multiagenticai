@@ -38,6 +38,13 @@ export const agents: Agent[] = [
     icon: 'youtube',
     href: '/agents/youtube',
   },
+  {
+    id: 'conversational',
+    name: 'Conversational Voice Agent',
+    description: 'Make real-time phone calls with AI-powered natural conversation. Perfect for customer service, appointments, and personal assistance.',
+    icon: 'voice',
+    href: '/agents/conversational',
+  },
 ]
 
 export function getAgentById(id: string): Agent | undefined {

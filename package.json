@@ -11,14 +11,21 @@
   "dependencies": {
     "@number-flow/react": "^0.6.0",
     "@radix-ui/react-dialog": "^1.1.15",
+    "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.9.1",
+    "@vapi-ai/web": "^2.5.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.34.5",
+    "groq-sdk": "^0.37.0",
     "lucide-react": "^0.576.0",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "tailwind-merge": "^3.5.0"
+    "sarvamai": "^1.1.4",
+    "tailwind-merge": "^3.5.0",
+    "twilio": "^5.12.2",
+    "ws": "^8.19.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

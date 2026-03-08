@@ -5,11 +5,10 @@ import { PricingCard, type PricingTier } from "@/components/ui/pricing-card"
 import { Tab } from "@/components/ui/pricing-tab"
 import { Sparkles } from "lucide-react"
 
-const PAYMENT_FREQUENCIES = ["monthly", "yearly"]
+export const PAYMENT_FREQUENCIES = ["monthly", "yearly"]
 
-const TIERS: PricingTier[] = [
+export const TIERS: PricingTier[] = [
   {
-    id: "individuals",
     name: "Individuals",
     price: {
       monthly: "Free",
@@ -26,7 +25,6 @@ const TIERS: PricingTier[] = [
     cta: "Get started",
   },
   {
-    id: "teams",
     name: "Teams",
     price: {
       monthly: 90,
@@ -44,7 +42,6 @@ const TIERS: PricingTier[] = [
     popular: true,
   },
   {
-    id: "organizations",
     name: "Organizations",
     price: {
       monthly: 120,
@@ -61,7 +58,6 @@ const TIERS: PricingTier[] = [
     cta: "Get started",
   },
   {
-    id: "enterprise",
     name: "Enterprise",
     price: {
       monthly: "Custom",
@@ -84,7 +80,7 @@ export function PricingSection() {
   const [selectedFrequency, setSelectedFrequency] = React.useState(PAYMENT_FREQUENCIES[0])
 
   return (
-    <section id="pricing" className="flex flex-col items-center gap-10 py-24 px-6 relative">
+    <section id="pricing" className="flex flex-col items-center gap-8 sm:gap-10 py-14 sm:py-20 md:py-24 px-6 relative">
       {/* Subtle blend overlay at top */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
       
@@ -95,8 +91,8 @@ export function PricingSection() {
               <Sparkles className="w-7 h-7 text-primary" />
             </div>
           </div>
-          <h1 className="text-4xl font-medium md:text-5xl">Simple, Transparent Pricing</h1>
-          <p className="text-muted-foreground">Choose the best plan for your needs. All plans include a 14-day free trial.</p>
+          <h1 className="text-4xl font-medium md:text-5xl">Simple Pricing</h1>
+          <p className="text-muted-foreground">Choose the best plan for your needs</p>
         </div>
         <div className="mx-auto flex w-fit rounded-full bg-muted p-1">
           {PAYMENT_FREQUENCIES.map((freq) => (

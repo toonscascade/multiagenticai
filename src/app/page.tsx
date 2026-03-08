@@ -1,17 +1,53 @@
+"use client"
+
 import { HeroLanding } from '@/components/ui/hero-1'
-import { AgentsSection } from '@/components/landing/agents-section'
 import { PricingSection } from '@/components/landing/pricing-section'
-import { Footer } from '@/components/landing/footer'
 import { Timeline } from '@/components/ui/timeline'
 import { agents } from '@/lib/agents-data'
+import { ClientsSection } from '@/components/landing/clients-section'
+import { Code2, Megaphone, Mic, Search, Youtube } from 'lucide-react'
+
+const iconMap: Record<string, any> = {
+  code: Code2,
+  marketing: Megaphone,
+  voice: Mic,
+  research: Search,
+  youtube: Youtube,
+}
 
 export default function HomePage() {
 
-  const timelineData = [
+  const agentsTimelineData = agents.map((agent) => {
+    const Icon = iconMap[agent.icon]
+    return {
+      title: agent.name,
+      content: (
+        <div key={agent.id} className="p-6 rounded-2xl bg-gradient-to-br from-background/50 to-muted/50 border border-border backdrop-blur-sm shadow-xl">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Icon className="w-6 h-6 text-primary" />
+            </div>
+            <h4 className="text-xl font-bold text-foreground">{agent.name}</h4>
+          </div>
+          <p className="text-muted-foreground text-base leading-relaxed mb-6">
+            {agent.description}
+          </p>
+          <a 
+            href={agent.href}
+            className="inline-flex items-center text-sm font-semibold text-primary hover:text-primary/80 transition-colors"
+          >
+            Learn more about {agent.name} <span aria-hidden="true" className="ml-1">→</span>
+          </a>
+        </div>
+      )
+    }
+  })
+
+  const journeyTimelineData = [
     {
       title: "v2.0 - 2026",
       content: (
-        <div>
+        <div key="v2.0">
           <p className="text-muted-foreground text-xs md:text-sm font-normal mb-4">
             Major release with multi-agent support and enhanced AI capabilities
           </p>
@@ -39,7 +75,7 @@ export default function HomePage() {
     {
       title: "v1.5 - Late 2025",
       content: (
-        <div>
+        <div key="v1.5">
           <p className="text-muted-foreground text-xs md:text-sm font-normal mb-4">
             Added voice agent and marketing agent to the platform
           </p>
@@ -59,7 +95,7 @@ export default function HomePage() {
     {
       title: "v1.0 - Early 2025",
       content: (
-        <div>
+        <div key="v1.0">
           <p className="text-muted-foreground text-xs md:text-sm font-normal mb-4">
             Initial launch with Software Engineer and Research agents
           </p>
@@ -154,26 +190,24 @@ export default function HomePage() {
         }}
       />
       
-      {/* Sections flow naturally - no negative margins, clean blend */}
-      <AgentsSection agents={agents} />
-      
-      {/* Timeline Section - Product Journey */}
-      <section id="timeline" className="relative py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground mb-4">
-              Our Journey
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              From humble beginnings to a comprehensive AI platform
-            </p>
-          </div>
-          <Timeline data={timelineData} />
-        </div>
+      {/* Clients Section from clients.md */}
+      <ClientsSection />
+
+      {/* Agents Scroll Section - Using Timeline for the scroll effect */}
+      <section id="agents" className="relative">
+        <Timeline 
+          data={agentsTimelineData} 
+          title="Meet Our AI Agents"
+          description="Powerful AI assistants ready to help you with coding, marketing, content creation, research, and more."
+        />
       </section>
       
-      <PricingSection />
-      <Footer />
-    </main>
+      {/* Journey Timeline Section - Product Journey */}
+      <section id="timeline" className="relative py-20">
+        <Timeline data={journeyTimelineData} />
+      </section>
+      
+        <PricingSection />
+      </main>
   )
 }

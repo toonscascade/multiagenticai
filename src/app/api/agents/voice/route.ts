@@ -1,197 +1,324 @@
 import { NextRequest, NextResponse } from 'next/server'
+import Groq from 'groq-sdk'
+import { SarvamAIClient } from 'sarvamai'
 
-export async function POST(request: NextRequest) {
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || '' })
+
+// Initialize Sarvam client
+const sarvamClient = process.env.SARVAM_API_KEY 
+  ? new SarvamAIClient({ apiSubscriptionKey: process.env.SARVAM_API_KEY })
+  : null
+
+// Sarvam AI Voice Models (bulbul:v3 compatible)
+const SARVAM_VOICES = {
+  shubh: {
+    name: 'Shubh',
+    gender: 'Male',
+    description: 'Friendly default voice for IVR and support',
+    bestFor: ['conversational', 'customer support', 'friendly chat']
+  },
+  ritu: {
+    name: 'Ritu',
+    gender: 'Female',
+    description: 'Soft, approachable voice for customer interactions',
+    bestFor: ['conversational', 'soft', 'approachable', 'warm']
+  },
+  amit: {
+    name: 'Amit',
+    gender: 'Male',
+    description: 'Formal voice for business communications',
+    bestFor: ['business', 'formal', 'professional', 'news']
+  },
+  sumit: {
+    name: 'Sumit',
+    gender: 'Male',
+    description: 'Balanced warmth with professionalism',
+    bestFor: ['balanced', 'professional', 'educational', 'sales']
+  },
+  pooja: {
+    name: 'Pooja',
+    gender: 'Female',
+    description: 'Encouraging voice for assistance flows',
+    bestFor: ['encouraging', 'assistance', 'support', 'helpful']
+  },
+  neha: {
+    name: 'Neha',
+    gender: 'Female',
+    description: 'Clear and professional voice',
+    bestFor: ['professional', 'clear', 'educational', 'news']
+  },
+  rahul: {
+    name: 'Rahul',
+    gender: 'Male',
+    description: 'Energetic voice for entertainment',
+    bestFor: ['entertainment', 'energetic', 'animated', 'fun']
+  },
+  priya: {
+    name: 'Priya',
+    gender: 'Female',
+    description: 'Warm and expressive for storytelling',
+    bestFor: ['audiobooks', 'storytelling', 'expressive', 'warm']
+  },
+  anushka: {
+    name: 'Anushka',
+    gender: 'Female',
+    description: 'Default female voice for general use',
+    bestFor: ['general', 'conversational', 'friendly']
+  },
+  abhilash: {
+    name: 'Abhilash',
+    gender: 'Male',
+    description: 'Professional male voice',
+    bestFor: ['professional', 'business', 'formal']
+  }
+}
+
+// Voice categories with descriptions
+const VOICE_CATEGORIES = {
+  conversational: {
+    name: 'Conversational',
+    description: 'Natural, friendly voice for casual chats and Q&A',
+    mood: 'warm, approachable, engaging',
+    recommendedVoices: ['shubh', 'ritu']
+  },
+  audiobooks: {
+    name: 'Audiobooks',
+    description: 'Expressive, storytelling voice for narration',
+    mood: 'dramatic, engaging, emotive',
+    recommendedVoices: ['priya', 'sumit']
+  },
+  entertainment: {
+    name: 'Entertainment',
+    description: 'Animated, dramatic voice for gaming and characters',
+    mood: 'energetic, theatrical, fun',
+    recommendedVoices: ['rahul', 'priya']
+  },
+  sales: {
+    name: 'Sales',
+    description: 'Persuasive, confident voice for marketing',
+    mood: 'enthusiastic, convincing, professional',
+    recommendedVoices: ['sumit', 'amit']
+  },
+  news: {
+    name: 'News',
+    description: 'Professional, neutral voice for broadcasting',
+    mood: 'authoritative, clear, objective',
+    recommendedVoices: ['amit', 'neha']
+  },
+  horror: {
+    name: 'Horror',
+    description: 'Deep, suspenseful voice for scary content',
+    mood: 'dark, mysterious, terrifying',
+    recommendedVoices: ['amit', 'rahul']
+  },
+  educational: {
+    name: 'Educational',
+    description: 'Clear, patient voice for learning content',
+    mood: 'calm, instructive, encouraging',
+    recommendedVoices: ['neha', 'pooja', 'sumit']
+  }
+}
+
+const SYSTEM_PROMPT = `You are VoiceAI, an advanced Voice Assistant that helps users with text-to-speech and voice-based interactions.
+
+Your capabilities:
+1. Analyze user text to determine the best voice model and characteristics
+2. Generate appropriate responses based on the context
+3. Provide voice-related advice and suggestions
+4. Help with scripts for voiceovers, podcasts, and audio content
+
+Available Voice Models (Sarvam AI):
+${Object.entries(SARVAM_VOICES).map(([key, voice]) => `- ${voice.name} (${voice.gender}): ${voice.description}. Best for: ${voice.bestFor.join(', ')}`).join('\n')}
+
+Voice Categories:
+${Object.entries(VOICE_CATEGORIES).map(([key, cat]) => `- ${cat.name}: ${cat.description} (Recommended voices: ${cat.recommendedVoices?.join(', ')})`).join('\n')}
+
+When responding:
+1. Analyze the user's text to understand the context, emotion, and purpose
+2. Select the BEST voice model from the available Sarvam voices based on the content
+3. Provide your response text that will be converted to speech
+
+Response Format:
+**Selected Voice:** [voice name like shubh, ritu, amit, etc.]
+**Voice Category:** [category like conversational, educational, etc.]
+**Response:**
+[Your text response here]
+
+**Voice Tips:**
+[Optional tips for better voice output]`
+
+export async function POST(req: NextRequest) {
   try {
-    const body = await request.json()
-    const { prompt } = body
+    const { prompt, history = [], voiceCategory = 'auto' } = await req.json()
 
-    if (!prompt || typeof prompt !== 'string') {
+    if (!prompt) {
       return NextResponse.json(
         { error: 'Prompt is required' },
         { status: 400 }
       )
     }
 
-    const simulatedResponse = generateVoiceResponse(prompt)
+    if (!process.env.GROQ_API_KEY) {
+      return NextResponse.json(
+        { error: 'Groq API key not configured' },
+        { status: 500 }
+      )
+    }
 
-    return NextResponse.json({
-      result: simulatedResponse,
-      agent: 'voice',
-      timestamp: new Date().toISOString(),
+    // Build message array with history
+    const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
+      {
+        role: 'system',
+        content: SYSTEM_PROMPT
+      }
+    ]
+
+    // Add conversation history (last 10 messages)
+    const recentHistory = history.slice(-10)
+    recentHistory.forEach((msg: { type: string; content: string }) => {
+      messages.push({
+        role: msg.type === 'user' ? 'user' : 'assistant',
+        content: msg.content
+      })
+    })
+
+    // Add current prompt with category context
+    const categoryContext = voiceCategory !== 'auto' 
+      ? `[Voice Category: ${voiceCategory}] ` 
+      : ''
+    
+    messages.push({
+      role: 'user',
+      content: `${categoryContext}${prompt}`
+    })
+
+    // Use Groq for text generation with streaming for faster response
+    const completion = await groq.chat.completions.create({
+      model: 'llama-3.3-70b-versatile',
+      messages,
+      temperature: 0.7,
+      max_tokens: 2048,
+      stream: false // Using non-streaming for now to parse voice selection first
+    })
+    
+    const text = completion.choices[0]?.message?.content || 'No response generated'
+
+    // Parse voice selection from response
+    const voiceMatch = text.match(/\*\*Selected Voice:\*\*\s*(\w+)/i)
+    const categoryMatch = text.match(/\*\*Voice Category:\*\*\s*(\w+)/i)
+    
+    const selectedVoice = voiceMatch ? voiceMatch[1].toLowerCase() : 'shubh'
+    const detectedCategory = categoryMatch ? categoryMatch[1].toLowerCase() : 'conversational'
+    
+    // Validate voice is in our available voices
+    const validVoice = Object.keys(SARVAM_VOICES).includes(selectedVoice) ? selectedVoice : 'shubh'
+    
+    // Check if Sarvam API key is configured
+    const sarvamConfigured = !!process.env.SARVAM_API_KEY
+
+    return NextResponse.json({ 
+      result: text,
+      voiceCategory: detectedCategory,
+      selectedVoice: validVoice,
+      voiceInfo: SARVAM_VOICES[validVoice as keyof typeof SARVAM_VOICES],
+      sarvamConfigured
     })
   } catch (error) {
-    console.error('Voice Agent Error:', error)
+    console.error('Voice Agent API Error:', error)
     return NextResponse.json(
-      { error: 'Failed to process request' },
+      { error: 'Failed to generate response' },
       { status: 500 }
     )
   }
 }
 
-function generateVoiceResponse(prompt: string): string {
-  const lowerPrompt = prompt.toLowerCase()
-  
-  if (lowerPrompt.includes('script') || lowerPrompt.includes('voiceover')) {
-    return `# Voiceover Script
+// Endpoint to generate actual speech (to be implemented with Sarvam)
+export async function PUT(req: NextRequest) {
+  try {
+    const { text, voiceCategory = 'conversational', selectedVoice = 'shubh', language = 'en-IN' } = await req.json()
 
-## Project: Professional Voiceover Script
+    if (!text) {
+      return NextResponse.json(
+        { error: 'Text is required' },
+        { status: 400 }
+      )
+    }
 
-### Direction Notes:
-- **Tone**: Professional, friendly, and engaging
-- **Pace**: Moderate - approximately 140 words per minute
-- **Style**: Conversational but authoritative
+    if (!process.env.SARVAM_API_KEY) {
+      return NextResponse.json(
+        { error: 'Sarvam API key not configured' },
+        { status: 500 }
+      )
+    }
 
----
+    // Call Sarvam AI TTS API using SDK
+    try {
+      console.log('Calling Sarvam TTS API with text:', text.substring(0, 50) + '...')
+      
+      if (!sarvamClient) {
+        return NextResponse.json(
+          { error: 'Sarvam client not initialized' },
+          { status: 500 }
+        )
+      }
 
-## Script Content
+      // Map our voice names to Sarvam speaker names
+      const speakerMap: Record<string, string> = {
+        'shubh': 'shubh',
+        'ritu': 'ritu',
+        'amit': 'amit',
+        'sumit': 'sumit',
+        'pooja': 'pooja',
+        'neha': 'neha',
+        'rahul': 'rahul',
+        'priya': 'priya'
+      }
+      
+      const speaker = speakerMap[selectedVoice] || 'shubh'
+      
+      console.log('Using Sarvam voice:', speaker)
+      
+      // Use Sarvam SDK for text-to-speech with optimized settings
+      const ttsResponse = await sarvamClient.textToSpeech.convert({
+        text: text,
+        target_language_code: language as any,
+        speaker: speaker as any,
+        pace: 1.1, // Slightly faster pace
+        speech_sample_rate: 22050,
+        model: 'bulbul:v3' as any
+      })
 
-**[INTRO - Warm and welcoming]**
+      console.log('Sarvam TTS response received')
 
-"Welcome to MultiAgent AI, where productivity meets innovation. I'm here to show you how our platform can transform the way you work."
+      // Sarvam SDK returns audios array with base64 encoded audio
+      const audioBase64 = ttsResponse.audios?.[0]
+      
+      if (!audioBase64) {
+        return NextResponse.json(
+          { error: 'No audio generated', response: ttsResponse },
+          { status: 500 }
+        )
+      }
 
-**[PAUSE - 0.5 seconds]**
-
-**[BODY - Enthusiastic and clear]**
-
-"Imagine having a team of expert assistants available 24/7. Our Software Engineer Agent helps you code faster. The Marketing Agent creates compelling campaigns. The Voice Agent brings your content to life. The Research Agent gathers insights in seconds. And the YouTube Agent helps you grow your audience."
-
-**[PAUSE - 0.3 seconds]**
-
-**[CALL TO ACTION - Upbeat and inviting]**
-
-"Join thousands of professionals already using MultiAgent AI. Start your free trial today at multiagent.ai."
-
-**[OUTRO - Warm closing]**
-
-"MultiAgent AI. Your future, automated."
-
----
-
-## Technical Specifications:
-- **Estimated Duration**: 45 seconds
-- **Word Count**: ~120 words
-- **Recommended Voice Type**: Neutral, professional
-- **Background Music**: Light, upbeat corporate track
-- **Sound Effects**: Subtle transitions between sections`
+      return NextResponse.json({
+        audioBase64,
+        text,
+        voiceCategory,
+        selectedVoice,
+        language
+      })
+    } catch (ttsError: any) {
+      console.error('TTS Error:', ttsError)
+      return NextResponse.json(
+        { error: 'Failed to generate speech', details: ttsError.message || ttsError },
+        { status: 500 }
+      )
+    }
+  } catch (error) {
+    console.error('Voice TTS Error:', error)
+    return NextResponse.json(
+      { error: 'Failed to generate speech' },
+      { status: 500 }
+    )
   }
-  
-  if (lowerPrompt.includes('podcast') || lowerPrompt.includes('intro')) {
-    return `# Podcast Intro Script
-
-## Episode Introduction Template
-
-### Cold Open (Hook)
-**[ENERGETIC]**
-"What if you could automate 80% of your daily tasks? Today, we're exploring how AI agents are revolutionizing workplace productivity."
-
-### Theme Music
-**[2-3 seconds of intro music]**
-
-### Host Introduction
-**[WARM AND FRIENDLY]**
-"Hey everyone, welcome back to [Podcast Name]! I'm your host [Name], and today we have an exciting episode about AI automation tools that are changing the game for professionals worldwide."
-
-### Episode Teaser
-**[BUILDING EXCITEMENT]**
-"We'll be diving deep into:
-- How AI agents work
-- Real-world use cases from actual users
-- Tips for implementing AI in your workflow
-- And a special demonstration you won't want to miss!"
-
-### Transition to Content
-**[CONVERSATIONAL]**
-"But first, let's talk about why this matters now more than ever..."
-
----
-
-## Production Notes:
-- **Total Intro Length**: 30-45 seconds
-- **Music Volume**: Fade down to -20dB under voice
-- **EQ Settings**: Boost presence around 3-5kHz for clarity
-- **Compression**: 3:1 ratio for consistent levels`
-  }
-  
-  if (lowerPrompt.includes('tts') || lowerPrompt.includes('text-to-speech')) {
-    return `# Text-to-Speech Guidelines
-
-## Best Practices for Natural-Sounding TTS
-
-### 1. Punctuation for Pauses
-- **Comma (,)**: Short pause (~0.2s)
-- **Period (.)**: Full stop (~0.5s)
-- **Ellipsis (...)**: Dramatic pause (~1s)
-- **Em dash (—)**: Break in thought
-
-### 2. Emphasis Techniques
-Use *italics* or CAPITALS for emphasis:
-"This is IMPORTANT" vs "This is important"
-
-### 3. SSML Tags (for advanced TTS)
-\`\`\`xml
-<speak>
-  <prosody rate="slow">Slower speech</prosody>
-  <emphasis level="strong">Important point!</emphasis>
-  <break time="1s"/>
-  <prosody pitch="+10%">Higher pitch</prosody>
-</speak>
-\`\`\`
-
-### 4. Recommended Settings by Use Case:
-
-| Use Case | Speed | Pitch | Energy |
-|----------|-------|-------|--------|
-| Tutorial | Normal | Normal | Calm |
-| Ad Copy | Slightly Fast | +5% | Energetic |
-| Meditation | Slow | -10% | Soothing |
-| News | Fast | Normal | Professional |
-
-### 5. Voice Selection Tips:
-- Choose voices that match your brand personality
-- Consider your target demographic
-- Test multiple voices with your actual content
-- Ensure consistency across all content`
-  }
-
-  // Default response
-  return `# Voice Agent Capabilities
-
-I can help you create various types of voice-related content:
-
-## What I Can Generate:
-
-### 1. Voiceover Scripts
-- Commercial advertisements
-- Explainer videos
-- Product demos
-- Corporate presentations
-- E-learning narration
-
-### 2. Podcast Content
-- Episode intros and outros
-- Segment transitions
-- Interview questions
-- Show notes outlines
-
-### 3. Audio Descriptions
-- Video accessibility scripts
-- Image descriptions
-- Scene narrations
-
-### 4. TTS Optimization
-- Text formatting for natural speech
-- SSML markup
-- Pronunciation guides
-- Pacing recommendations
-
-## To get started, tell me:
-- What type of content do you need?
-- What's the intended audience?
-- Desired tone (professional, casual, energetic)?
-- Target duration or word count?
-
-Example requests:
-- "Write a 30-second commercial script for our product"
-- "Create a podcast intro for a tech show"
-- "Format this article for text-to-speech"`
 }

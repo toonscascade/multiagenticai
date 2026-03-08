@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { Navbar } from '@/components/ui/navbar'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Agent } from '@/lib/agents-data'
@@ -97,8 +96,6 @@ export function AgentInterface({ agent, apiEndpoint }: AgentInterfaceProps) {
           className="relative left-[calc(50%-20rem)] aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[180deg] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
         />
       </div>
-
-      <Navbar />
       
       <div className="pt-24 pb-12 px-6">
         <div className="max-w-4xl mx-auto">

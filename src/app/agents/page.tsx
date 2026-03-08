@@ -1,6 +1,6 @@
-import { AgentCard } from '@/components/agents/agent-card'
+import { AgentsCarousel } from '@/components/agents/agents-carousel'
 import { agents } from '@/lib/agents-data'
-import { Bot, Sparkles } from 'lucide-react'
+import { Bot, Sparkles, Zap } from 'lucide-react'
 
 export default function AgentsPage() {
   return (
@@ -19,44 +19,47 @@ export default function AgentsPage() {
           className="relative left-[calc(50%-20rem)] aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[30deg] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
         />
       </div>
-      
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 -z-10 transform-gpu overflow-hidden blur-3xl"
-      >
-        <div
-          style={{
-            clipPath:
-              'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            background: 'linear-gradient(to top right, oklch(0.7 0.15 280), oklch(0.6 0.2 320))'
-          }}
-          className="relative left-[calc(50%-20rem)] aspect-[1155/678] w-[36.125rem] max-w-none -translate-x-1/2 rotate-[180deg] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-        />
-      </div>
 
       <div className="pt-12 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-20">
+          <div className="text-center mb-16">
             <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center shadow-lg">
-                <Bot className="w-8 h-8 text-primary" />
+              <div className="relative">
+                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full" />
+                <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center shadow-lg border border-primary/20">
+                  <Bot className="w-8 h-8 text-primary" />
+                </div>
               </div>
             </div>
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground mb-6">
               AI Agents
             </h1>
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
               Discover our powerful suite of AI assistants designed to help you with various tasks.
               From coding to content creation, we have an agent for that.
             </p>
+            
+            {/* Feature Pills */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {[
+                { icon: Zap, text: "Lightning Fast" },
+                { icon: Sparkles, text: "AI Powered" },
+              ].map((feature, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10 text-sm text-muted-foreground"
+                >
+                  <feature.icon size={14} className="text-primary" />
+                  {feature.text}
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* Agents Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
-            {agents.map((agent) => (
-              <AgentCard key={agent.id} agent={agent} />
-            ))}
+          {/* Interactive Agents Carousel */}
+          <div className="mb-20">
+            <AgentsCarousel agents={agents} />
           </div>
 
           {/* CTA Section */}
@@ -85,12 +88,6 @@ export default function AgentsPage() {
           </div>
         </div>
       </div>
-
-      <footer className="border-t border-border bg-muted/30">
-        <div className="max-w-7xl mx-auto px-6 py-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} MultiAgent AI. All rights reserved.</p>
-        </div>
-      </footer>
     </main>
   )
 }

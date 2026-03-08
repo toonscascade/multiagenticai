@@ -1,4 +1,7 @@
-import { AgentInterface } from '@/components/agents/agent-interface'
+"use client"
+
+import { SoftwareAgentChat } from '@/components/agents/software-agent-chat'
+import { Sidebar } from '@/components/landing/sidebar'
 import { getAgentById } from '@/lib/agents-data'
 
 export default function SoftwareEngineerAgentPage() {
@@ -9,9 +12,14 @@ export default function SoftwareEngineerAgentPage() {
   }
 
   return (
-    <AgentInterface 
-      agent={agent} 
-      apiEndpoint="/api/agents/software-engineer"
-    />
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <div className="flex-1">
+        <SoftwareAgentChat
+          agent={agent}
+          apiEndpoint="/api/agents/software-engineer"
+        />
+      </div>
+    </div>
   )
 }

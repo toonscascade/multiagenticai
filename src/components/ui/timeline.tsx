@@ -12,7 +12,7 @@ interface TimelineEntry {
   content: React.ReactNode;
 }
 
-export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
+export const Timeline = ({ data, title, description }: { data: TimelineEntry[], title?: string, description?: string }) => {
   const ref = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(0);
@@ -39,11 +39,10 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
     >
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
         <h2 className="text-lg md:text-4xl mb-4 text-foreground max-w-4xl">
-          Changelog from our journey
+          {title || "Changelog from our journey"}
         </h2>
         <p className="text-muted-foreground text-sm md:text-base max-w-sm">
-          We&apos;ve been working on MultiAgent AI for the past 2 years. Here&apos;s
-          a timeline of our journey.
+          {description || "We've been working on MultiAgent AI for the past 2 years. Here's a timeline of our journey."}
         </p>
       </div>
 
